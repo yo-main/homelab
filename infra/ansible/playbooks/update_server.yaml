@@ -1,0 +1,7 @@
+- name: Update raspberries server
+  hosts: raspberries
+
+  tasks:
+  - name: apt upgrade
+    apt: update_cache=true upgrade=yes
+    become: true

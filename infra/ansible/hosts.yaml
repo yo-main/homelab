@@ -1,0 +1,10 @@
+ayesll:
+  hosts:
+    rasp-01.local:
+  children:
+    raspberries:
+      hosts:
+        rasp-[01:01].local:
+          ansible_connection: ssh
+          ansible_user: ansible
+    
