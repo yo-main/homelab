@@ -9,7 +9,7 @@
       mode: '0755'
   - name: Inject Configuration file
     copy:
-      src: ../../haproxy/haproxy.cfg
+      src: haproxy.cfg
       dest: /apps/haproxy/haproxy.cfg
   - name: Run haproxy in docker
     docker_container:

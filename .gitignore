@@ -1,4 +1,3 @@
 .venv
 .vault_passwd
-*/**/id_rsa
-*/**/id_rsa.pub
+*/**/secrets

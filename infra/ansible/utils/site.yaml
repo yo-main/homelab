@@ -1,0 +1,3 @@
+- import_playbook: common_base.yaml
+- import_playbook: update_server.yaml
+- import_playbook: install_docker.yaml
