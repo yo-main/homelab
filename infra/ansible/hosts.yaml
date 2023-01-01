@@ -1,10 +1,12 @@
-ayesll:
+all:
   hosts:
-    rasp-01.local:
+    home:
+      ansible_connection: ssh
+      ansible_user: ansible
   children:
     raspberries:
       hosts:
-        rasp-[01:01].local:
-          ansible_connection: ssh
-          ansible_user: ansible
-    
+        home:
+    entrypoint:
+      hosts:
+        home:

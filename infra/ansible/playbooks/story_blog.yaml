@@ -1,0 +1,26 @@
+
+- name: Run story blog
+  hosts: entrypoint
+
+  tasks:
+  - name: Create app folder
+    file:
+      path: /apps/story
+      state: directory
+      mode: '0755'
+  - name: Docker login
+    docker_login:
+      username: yomain
+      password: 
+  - name: Run haproxy in docker
+    docker_container:
+      name: story
+      image: yomain/blog
+      state: started
+      platform: linux/arm/v7
+      published_ports:
+      - 8001
+      restart_policy: unless-stopped
+      networks:
+      - name: homelab
+      detach: true

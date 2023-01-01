@@ -1,0 +1,22 @@
+- name: Get the machine ready by doing stuff
+  hosts: raspberries
+  roles:
+  - sudo
+
+  tasks:
+  - name: Create apps folder
+    become: true
+    file:
+      path: /apps
+      state: directory
+      mode: '0755'
+      owner: ansible
+  - name: Install dev dependencies
+    become: true
+    apt:
+      update_cache: true
+      pkg:
+      - vim
+  - name: Create docker homelab network
+    docker_network:
+      name: homelab

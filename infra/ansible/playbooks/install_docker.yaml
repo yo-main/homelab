@@ -1,6 +1,8 @@
 - name: Install docker
   hosts: raspberries
   become: true
+  roles:
+  - sudo
 
   tasks:
   - name: Install dependencies

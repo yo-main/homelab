@@ -1,2 +1,4 @@
 .venv
-infra/ansible/keys
+.vault_passwd
+*/**/id_rsa
+*/**/id_rsa.pub

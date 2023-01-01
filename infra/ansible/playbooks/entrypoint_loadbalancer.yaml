@@ -1,0 +1,27 @@
+- name: Install main load balancer
+  hosts: entrypoint
+
+  tasks:
+  - name: Create app folder
+    file:
+      path: /apps/haproxy
+      state: directory
+      mode: '0755'
+  - name: Inject Configuration file
+    copy:
+      src: ../../haproxy/haproxy.cfg
+      dest: /apps/haproxy/haproxy.cfg
+  - name: Run haproxy in docker
+    docker_container:
+      name: entrypoint
+      image: haproxy
+      state: started
+      restart_policy: unless-stopped
+      networks:
+      - name: homelab
+      volumes:
+      - /apps/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+      published_ports:
+      - 80
+      - 443
+      detach: true

@@ -1,7 +1,11 @@
 - name: Update raspberries server
   hosts: raspberries
+  roles:
+  - sudo
 
   tasks:
   - name: apt upgrade
-    apt: update_cache=true upgrade=yes
+    apt:
+      update_cache: true
+      upgrade: yes
     become: true
