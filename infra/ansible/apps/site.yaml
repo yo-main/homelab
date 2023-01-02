@@ -1,2 +1,2 @@
 - import_playbook: entrypoint/app.yaml
-# - import_playbook: story/app.yaml
+- import_playbook: story/app.yaml

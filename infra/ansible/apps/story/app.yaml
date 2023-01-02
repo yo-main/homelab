@@ -1,6 +1,7 @@
-
 - name: Run story blog
   hosts: entrypoint
+  roles:
+  - docker
 
   tasks:
   - name: Create app folder
@@ -10,13 +11,14 @@
       mode: '0755'
   - name: Docker login
     docker_login:
-      username: yomain
-      password: 
+      username: "{{ docker_username }}"
+      password: "{{ docker_password }}"
   - name: Run haproxy in docker
     docker_container:
       name: story
       image: yomain/blog
       state: started
+      pull: true
       platform: linux/arm/v7
       published_ports:
       - 8001

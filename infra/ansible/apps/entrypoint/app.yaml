@@ -11,17 +11,24 @@
     copy:
       src: haproxy.cfg
       dest: /apps/haproxy/haproxy.cfg
+  - name: Inject allowed ip file
+    copy:
+      src: allowed_ips
+      dest: /apps/haproxy/allowed_ips
   - name: Run haproxy in docker
     docker_container:
       name: entrypoint
       image: haproxy
       state: started
+      restart: true
       restart_policy: unless-stopped
+      pull: true
       networks:
       - name: homelab
       volumes:
       - /apps/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
-      published_ports:
-      - 80
-      - 443
+      - /apps/haproxy/allowed_ips:/usr/local/etc/haproxy/allowed_ips:ro
+      ports:
+      - 80:80
+      - 443:443
       detach: true
