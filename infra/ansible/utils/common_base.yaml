@@ -17,6 +17,3 @@
       update_cache: true
       pkg:
       - vim
-  - name: Create docker homelab network
-    docker_network:
-      name: homelab

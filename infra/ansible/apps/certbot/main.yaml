@@ -1,0 +1,66 @@
+- name: Set up ssl certificates using cerbot
+  hosts: entrypoint
+  roles:
+  - sudo
+  - certbot
+
+  tasks:
+  - name: Create app folder
+    file:
+      path: /apps/certbot
+      state: directory
+      mode: '0755'
+  - name: Copy credentials
+    copy:
+      src: credentials
+      dest: /apps/certbot/credentials
+      mode: '0700'
+  - name: Copy cerbot account information
+    become: true
+    copy:
+      src: acme-v02.api.letsencrypt.org
+      dest: /etc/letsencrypt/accounts/acme-v02.api.letsencrypt.org
+  - name: Install snapd
+    become: true
+    apt:
+      update_cache: true
+      pkg:
+      - snapd
+  - name: Ensure snapd is up to date
+    become: true
+    command: snap install core
+  - name: Ensure snapd is up to date (bis)
+    become: true
+    command: snap refresh core
+  - name: Install certbot
+    become: true
+    command: snap install --classic certbot
+  - name: Allow snap usage
+    become: true
+    command: ln -sf /snap/bin/certbot /usr/bin/certbot
+  - name: Confirm plugin containment level
+    become: true
+    command: snap set certbot trust-plugin-with-root=ok
+  - name: Install certbot plugin for digital ocean
+    become: true
+    command: snap install certbot-dns-digitalocean
+  - name: Get certificates
+    become: true
+    command:
+      argv:
+      - certbot
+      - certonly
+      - --dns-digitalocean
+      - --dns-digitalocean-credentials
+      - /apps/certbot/credentials
+      - -m
+      - "{{ email_address }}"
+      - --expand
+      - -n
+      - -d
+      - "{{ base_domain }}"
+      - -d
+      - "*.{{ base_domain }}"
+      - -d
+      - "*.{{ subdomain1 }}.{{ base_domain }}"
+ 

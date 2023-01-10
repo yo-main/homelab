@@ -1,5 +1,7 @@
 - name: Install main load balancer
   hosts: entrypoint
+  roles:
+  - certbot
 
   tasks:
   - name: Create app folder
@@ -23,11 +25,14 @@
       restart: true
       restart_policy: unless-stopped
       pull: true
+      user: root
       networks:
       - name: homelab
       volumes:
       - /apps/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
       - /apps/haproxy/allowed_ips:/usr/local/etc/haproxy/allowed_ips:ro
+      - /etc/letsencrypt/live/{{ base_domain }}-0001/fullchain.pem:/apps/haproxy/ssl/fullchain.pem:ro
+      - /etc/letsencrypt/live/{{ base_domain }}-0001/privkey.pem:/apps/haproxy/ssl/fullchain.pem.key:ro
       ports:
       - 80:80
       - 443:443
