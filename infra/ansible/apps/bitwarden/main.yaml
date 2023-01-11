@@ -1,0 +1,29 @@
+- name: Run story blog
+  hosts: entrypoint
+  roles:
+  - certbot
+  - bitwarden
+
+  tasks:
+  - name: Create app folder
+    file:
+      path: /apps/bitwarden
+      state: directory
+      mode: '0755'
+  - name: Run bitwarden in docker
+    docker_container:
+      name: bitwarden
+      image: vaultwarden/server
+      state: started
+      pull: true
+      platform: linux/arm/v7
+      restart_policy: unless-stopped
+      networks:
+      - name: homelab
+      detach: true
+      volumes:
+      - /apps/bitwarden/data:/data
+      env:
+        DOMAIN: "https://bitwarden.{{subdomain1}}.{{base_domain}}"
+        ADMIN_TOKEN: "{{bitwarden_admin_password}}"
+
