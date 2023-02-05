@@ -63,4 +63,6 @@
       - "*.{{ base_domain }}"
       - -d
       - "*.{{ subdomain1 }}.{{ base_domain }}"
+      - -d
+      - "*.akingbee.{{ base_domain }}"
  
