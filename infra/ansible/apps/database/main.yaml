@@ -1,0 +1,40 @@
+- name: Setup postgres database
+  hosts: database_droplet
+
+  roles:
+  - postgres
+
+  tasks:
+  - name: Create app folder
+    file:
+      path: /apps/postgres
+      state: directory
+      mode: '0755'
+  - name: Copy user script
+    copy:
+      src: users.sh
+      dest: /apps/postgres/users.sh
+  - name: Make data folder
+    file:
+      path: /mnt/database_volume/data
+      state: directory
+  - name: Run postgres in docker
+    docker_container:
+      name: postgres
+      image: postgres
+      state: started
+      pull: true
+      published_ports:
+      - 5432:5432
+      restart_policy: unless-stopped
+      networks:
+      - name: homelab
+      detach: true
+      volumes:
+      - /mnt/database_volume/data:/var/lib/postgresql/data
+      - /apps/postgres/users.sh:/scripts/users.sh
+      env:
+        POSTGRES_PASSWORD: "{{ postgres_password }}"
+        POSTGRES_USER: "{{ postgres_user }}"
+        POSTGRES_DB: postgres
+

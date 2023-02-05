@@ -3,6 +3,10 @@ all:
     home:
       ansible_connection: ssh
       ansible_user: ansible
+    database_droplet:
+      ansible_host: 144.126.247.63
+      ansible_connection: ssh
+      ansible_user: root
   children:
     raspberries:
       hosts:

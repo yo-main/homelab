@@ -1,0 +1,53 @@
+- name: Run Aristaeus service
+  hosts: home
+  roles:
+  - akingbee
+
+  tasks:
+  - name: Run Aristaeus Api
+    docker_container:
+      name: aristaeus-api
+      image: yomain/aristaeus
+      state: started
+      pull: true
+      platform: linux/arm/v7
+      restart_policy: unless-stopped
+      networks:
+      - name: homelab
+      detach: true
+      env:
+        SERVICE_NAME: "aristaeus-api"
+        EXECUTE_MIGRATION: "true"
+        AKB_DATABASE_HOST: "{{ database_host }}"
+        AKB_DATABASE_USER: "{{ aristaeus_db_user }}"
+        AKB_DATABASE_PASSWORD: "{{ aristaeus_db_password }}"
+        AKB_DATABASE_DBNAME: "{{ aristaeus_db_name }}"
+        AKB_CERBES_ENDPOINT: "http://cerbes:8004"
+  - name: Run Aristaeus Listener
+    docker_container:
+      name: aristaeus-listener
+      image: yomain/aristaeus
+      state: started
+      pull: true
+      platform: linux/arm/v7
+      restart_policy: unless-stopped
+      networks:
+      - name: homelab
+      detach: true
+      command:
+      - python
+      - aristaeus/controllers/consumers/app.py
+      env:
+        SERVICE_NAME: aristaeus-api
+        AKB_DATABASE_HOST: "{{ database_host }}"
+        AKB_DATABASE_USER: "{{ aristaeus_db_user }}"
+        AKB_DATABASE_PASSWORD: "{{ aristaeus_db_password }}"
+        AKB_DATABASE_DBNAME: "{{ aristaeus_db_name }}"
+        AKB_RBMQ_HOST: "rbmq"
+        AKB_RBMQ_PORT: "5672"
+        AKB_RBMQ_USER: "{{ rbmq_user }}"
+        AKB_RBMQ_PASSWORD: "{{ rbmq_pass }}"
+        AKB_RBMQ_VHOST: /
+        AKB_RBMQ_EXCHANGE: akingbee.main_exchange
+        AKB_RBMQ_EXCHANGE_TYPE: topic
+        AKB_RBMQ_QUEUE: aristaeus-main-queue

@@ -1,5 +1,7 @@
 - name: Install docker
-  hosts: raspberries
+  hosts:
+  - raspberries
+  - database_droplet
   become: true
   roles:
   - sudo

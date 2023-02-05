@@ -1,0 +1,29 @@
+- name: Run Cerbes service
+  hosts: home
+  roles:
+  - akingbee
+
+  tasks:
+  - name: Run Cerbes Api
+    docker_container:
+      name: cerbes
+      image: yomain/cerbes
+      state: started
+      pull: true
+      platform: linux/arm/v7
+      restart_policy: unless-stopped
+      networks:
+      - name: homelab
+      detach: true
+      env:
+        SERVICE_NAME: "cerbes"
+        EXECUTE_MIGRATION: "true"
+        AKB_DATABASE_HOST: "{{ database_host }}"
+        AKB_DATABASE_USER: "{{ cerbes_db_user }}"
+        AKB_DATABASE_PASSWORD: "{{ cerbes_db_password }}"
+        AKB_DATABASE_DBNAME: "{{ cerbes_db_name }}"
+        AKB_RBMQ_HOST: rbmq
+        AKB_RBMQ_USER: "{{ rbmq_user }}"
+        AKB_RBMQ_PASSWORD: "{{ rbmq_pass }}"
+        AKB_RBMQ_PORT: "5672"
+        AKB_RBMQ_VHOST: "/"
