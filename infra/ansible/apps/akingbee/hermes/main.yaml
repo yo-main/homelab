@@ -24,5 +24,5 @@
         AKB_RBMQ_VHOST: "/"
         AKB_EMAIL_SERVER_HOST: "{{ email_server_host }}"
         AKB_EMAIL_SERVER_PORT: "{{ email_server_port }}"
-        AKB_EMAIL_NO_REPLY: "{{ email_no_reply }}"
-        AKB_EMAIL_NO_REPLY_PASSWORD: "{{ email_no_reply_password }}"
+        AKB_NOREPLY_EMAIL: "{{ email_no_reply }}"
+        AKB_NOREPLY_EMAIL_PASSWORD: "{{ email_no_reply_password }}"

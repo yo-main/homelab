@@ -34,3 +34,9 @@ variable "volumes" {
     filesystem = string
   }))
 }
+
+variable "allowed_ips" {
+  description = "List of IPs which are allowed to contact the droplet (all tccp/udp ports)"
+  type = list(string)
+  default = []
+}

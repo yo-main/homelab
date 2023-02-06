@@ -18,6 +18,7 @@
       env:
         SERVICE_NAME: "cerbes"
         EXECUTE_MIGRATION: "true"
+        DISABLE_CORS: "true"
         AKB_DATABASE_HOST: "{{ database_host }}"
         AKB_DATABASE_USER: "{{ cerbes_db_user }}"
         AKB_DATABASE_PASSWORD: "{{ cerbes_db_password }}"

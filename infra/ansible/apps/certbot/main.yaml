@@ -44,7 +44,7 @@
   - name: Install certbot plugin for digital ocean
     become: true
     command: snap install certbot-dns-digitalocean
-  - name: Get certificates
+  - name: Get certificates homelab
     become: true
     command:
       argv:
@@ -65,4 +65,21 @@
       - "*.{{ subdomain1 }}.{{ base_domain }}"
       - -d
       - "*.akingbee.{{ base_domain }}"
+  - name: Get certificates akingbee
+    become: true
+    command:
+      argv:
+      - certbot
+      - certonly
+      - --dns-digitalocean
+      - --dns-digitalocean-credentials
+      - /apps/certbot/credentials
+      - -m
+      - "{{ email_address }}"
+      - --expand
+      - -n
+      - -d
+      - akingbee.com
+      - -d
+      - "*.akingbee.com"
  

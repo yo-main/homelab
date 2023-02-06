@@ -26,3 +26,22 @@ resource "digitalocean_reserved_ip" "main" {
   droplet_id = digitalocean_droplet.main.id
   region     = digitalocean_droplet.main.region
 }
+
+resource "digitalocean_firewall" "main" {
+  count = length(var.allowed_ips) > 0 ? 1 : 0
+
+  name = "firewall-${var.name}"
+  droplet_ids = [digitalocean_droplet.main.id]
+
+  inbound_rule {
+    protocol = "tcp"
+    port_range = "1-65535"
+    source_addresses = var.allowed_ips
+  }
+
+  inbound_rule {
+    protocol = "udp"
+    port_range = "1-65535"
+    source_addresses = var.allowed_ips
+  }
+}

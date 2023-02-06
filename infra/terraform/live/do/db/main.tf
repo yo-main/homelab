@@ -24,4 +24,6 @@ module "db_droplet" {
       filesystem = "ext4"
     }
   ]
+
+  allowed_ips = [var.home_ip]
 }
