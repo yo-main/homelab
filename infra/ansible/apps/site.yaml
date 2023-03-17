@@ -1,2 +1,3 @@
-- import_playbook: entrypoint/app.yaml
-- import_playbook: story/app.yaml
+- import_playbook: entrypoint/main.yaml
+- import_playbook: story/main.yaml
+- import_playbook: akingbee/site.yaml

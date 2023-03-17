@@ -17,14 +17,11 @@
       detach: true
       env:
         SERVICE_NAME: "cerbes"
-        EXECUTE_MIGRATION: "true"
-        DISABLE_CORS: "true"
-        AKB_DATABASE_HOST: "{{ database_host }}"
-        AKB_DATABASE_USER: "{{ cerbes_db_user }}"
-        AKB_DATABASE_PASSWORD: "{{ cerbes_db_password }}"
-        AKB_DATABASE_DBNAME: "{{ cerbes_db_name }}"
-        AKB_RBMQ_HOST: rbmq
-        AKB_RBMQ_USER: "{{ rbmq_user }}"
-        AKB_RBMQ_PASSWORD: "{{ rbmq_pass }}"
-        AKB_RBMQ_PORT: "5672"
-        AKB_RBMQ_VHOST: "/"
+        CERBES_ENV: "production"
+        AKB_MAIN_HOSTED_ZONE: akingbee.com
+        CERBES__DATABASE__URL : "postgres://{{ cerbes_db_user }}:{{ cerbes_db_password }}@{{ database_host }}/{{ cerbes_db_name }}"
+        CERBES__RABBITMQ__HOST : rbmq
+        CERBES__RABBITMQ__USER: "{{ rbmq_user }}"
+        CERBES__RABBITMQ__PASSWORD: "{{ rbmq_pass }}"
+        CERBES__RABBITMQ__PORT: "5672"
+        CERBES__RABBITMQ__VHOST: "/"
