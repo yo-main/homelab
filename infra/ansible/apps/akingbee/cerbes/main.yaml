@@ -19,6 +19,7 @@
         SERVICE_NAME: "cerbes"
         CERBES_ENV: "local"
         AKB_MAIN_HOSTED_ZONE: akingbee.com
+        CERBES__APP__PORT: "80"
         CERBES__DATABASE__URL : "postgres://{{ cerbes_db_user }}:{{ cerbes_db_password }}@{{ database_host }}/{{ cerbes_db_name }}"
         CERBES__RABBITMQ__HOST : rbmq
         CERBES__RABBITMQ__USER: "{{ rbmq_user }}"
