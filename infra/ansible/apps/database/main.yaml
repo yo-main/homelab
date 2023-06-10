@@ -1,8 +1,10 @@
 - name: Setup postgres database
-  hosts: database_droplet
+  hosts: 
+    - raspberries
 
   roles:
   - postgres
+  - aws
 
   tasks:
   - name: Create app folder
@@ -10,20 +12,20 @@
       path: /apps/postgres
       state: directory
       mode: '0755'
+      owner: "ansible"
   - name: Copy user script
     copy:
       src: users.sh
       dest: /apps/postgres/users.sh
-  - name: Make data folder
-    file:
-      path: /mnt/database_volume/data
-      state: directory
   - name: Run postgres in docker
     docker_container:
       name: postgres
       image: postgres
       state: started
       pull: true
+      # https://stackoverflow.com/questions/56188573/permission-issue-with-postgresql-in-docker-container
+      # only set the user id once the folder will have been created
+      user: "1001:1001" # ansible gid
       published_ports:
       - 5432:5432
       restart_policy: unless-stopped
@@ -31,10 +33,16 @@
       - name: homelab
       detach: true
       volumes:
-      - /mnt/database_volume/data:/var/lib/postgresql/data
+      - /apps/postgres/data:/var/lib/postgresql/data
       - /apps/postgres/users.sh:/scripts/users.sh
       env:
         POSTGRES_PASSWORD: "{{ postgres_password }}"
         POSTGRES_USER: "{{ postgres_user }}"
         POSTGRES_DB: postgres
+  - name: "Add cron for backup"
+    ansible.builtin.cron:
+      name: "Backup postgres data"
+      minute: "30"
+      hour: "22"
+      job: "AWS_BACKUP_BUCKET={{ aws_backup_bucket }} python /scripts/backup_aws.py /apps/postgres/data"
 

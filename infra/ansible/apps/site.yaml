@@ -1,3 +1,4 @@
 - import_playbook: entrypoint/main.yaml
 - import_playbook: story/main.yaml
 - import_playbook: akingbee/site.yaml
+- import_playbook: database/main.yaml
