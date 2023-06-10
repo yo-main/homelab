@@ -3,6 +3,7 @@
   roles:
   - certbot
   - bitwarden
+  - aws
 
   tasks:
   - name: Create app folder
@@ -26,4 +27,10 @@
       env:
         DOMAIN: "https://bitwarden.{{subdomain1}}.{{base_domain}}"
         ADMIN_TOKEN: "{{bitwarden_admin_password}}"
+  - name: "Add cron for backup"
+    ansible.builtin.cron:
+      name: "Backup bitwarden data"
+      minute: "0"
+      hour: "23"
+      job: "AWS_BACKUP_BUCKET={{ aws_backup_bucket }} python /scripts/backup_aws.py /app/bitwarden/data"
 

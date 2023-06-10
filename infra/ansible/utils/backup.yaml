@@ -1,0 +1,36 @@
+- name: "Add script to backup folder in aws s3"
+  hosts:
+  - raspberries
+  roles:
+  - aws
+  - sudo
+
+  tasks:
+  - name: "Install boto3"
+    ansible.builtin.pip:
+      name: boto3
+  - name: "Create script folder"
+    become: true
+    file:
+      path: /scripts
+      state: directory
+      mode: '0777'
+  - name: "Copy backup script"
+    ansible.builtin.copy:
+      src: ../../../scripts/backup_aws.py
+      dest: /scripts/backup_aws.py
+  - name: "Create aws folder"
+    ansible.builtin.file:
+      path: "~/.aws"
+      state: directory
+  - name: "Create credentials file"
+    ansible.builtin.file:
+      path: "~/.aws/credentials"
+      state: touch
+  - name: "Add content in aws credentials file"
+    ansible.builtin.copy:
+      dest: "~/.aws/credentials"
+      content: |
+        [default]
+        aws_access_key_id={{ aws_access_key }}
+        aws_secret_access_key={{ aws_secret_key }}
