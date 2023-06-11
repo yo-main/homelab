@@ -12,6 +12,16 @@
       pull: true
       platform: linux/arm/v7
       restart_policy: unless-stopped
+      command:
+      - uvicorn
+      - --host
+      - 0.0.0.0
+      - --port
+      - 80
+      - --proxy-headers
+      - --workers
+      - 4
+      - aristaeus.controllers.api.app:create_app
       networks:
       - name: homelab
       detach: true
