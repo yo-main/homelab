@@ -1,0 +1,25 @@
+scrape_configs:
+    # collect prometheus metrics
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  # collect docker metrics
+  - job_name: "docker"
+    static_configs:
+      - targets: ["localhost:9323"]
+
+  # haproxy
+  - job_name: "haproxy"
+    static_configs:
+      - targets: ["entrypoint:9000"]
+
+  # containers
+  - job_name: "docker-containers"
+    docker_sd_configs:
+      - host: unix:///var/run/docker.sock
+
+  # the raspberry
+  - job_name: "raspberry"
+    static_configs:
+      - targets: ["172.18.0.1:9100"] # host ip from containers

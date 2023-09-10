@@ -1,7 +1,6 @@
 - name: Install docker
   hosts:
   - raspberries
-  - database_droplet
   become: true
   roles:
   - sudo
@@ -42,3 +41,10 @@
   - name: Create docker homelab network
     docker_network:
       name: homelab
+  - name: Create daemon.json file
+    copy:
+      dest: /etc/docker/daemon.json
+      content: |
+        {
+          "metrics-addr" : "127.0.0.1:9323"
+        }

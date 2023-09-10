@@ -1,0 +1,14 @@
+# this uses the community module from prometheus.
+# it must be manually installed
+# ansible-galaxy collection install prometheus.prometheus
+
+# documentation
+# https://prometheus-community.github.io/ansible/branch/main/node_exporter_role.html
+
+- name: Install node exporter to expose prometheus metrics about the machine
+  hosts: 
+  - raspberries
+  roles:
+  - sudo
+  - prometheus.prometheus.node_exporter
+

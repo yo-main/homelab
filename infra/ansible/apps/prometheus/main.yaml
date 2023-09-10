@@ -1,0 +1,31 @@
+- name: Install prometheus
+  hosts: entrypoint
+
+  tasks:
+  - name: Create app folder
+    file:
+      path: /apps/prometheus
+      state: directory
+      mode: '0755'
+  - name: Inject Configuration file
+    copy:
+      src: prometheus.yaml
+      dest: /apps/prometheus/prometheus.yaml
+  - name: Run prometheus in docker
+    docker_container:
+      name: prometheus
+      image: prom/prometheus
+      user: "1001:995" # ansible gid / docker gid
+      state: started
+      restart: true
+      restart_policy: unless-stopped
+      pull: true
+      networks:
+      - name: homelab
+      volumes:
+      - /apps/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml:ro
+      - /apps/prometheus/data:/prometheus
+      - /var/run/docker.sock:/var/run/docker.sock
+      ports:
+      - 9090:9090
+      detach: true

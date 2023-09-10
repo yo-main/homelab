@@ -32,5 +32,5 @@
       name: "Backup bitwarden data"
       minute: "0"
       hour: "23"
-      job: "AWS_BACKUP_BUCKET={{ aws_backup_bucket }} python /scripts/backup_aws.py /app/bitwarden/data"
+      job: "AWS_BACKUP_BUCKET={{ aws_backup_bucket }} python /scripts/backup_aws.py /apps/bitwarden/data"
 

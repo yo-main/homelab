@@ -1,0 +1,30 @@
+- name: Install grafana
+  hosts: entrypoint
+
+  tasks:
+  - name: Create app folder
+    file:
+      path: /apps/grafana
+      state: directory
+      mode: '0755'
+  - name: Inject Configuration file
+    copy:
+      src: grafana.ini
+      dest: /apps/grafana/grafana.ini
+  - name: Run grafana in docker
+    docker_container:
+      name: grafana
+      image: grafana/grafana
+      state: started
+      user: "1001:1001" # ansible gid
+      restart: true
+      restart_policy: unless-stopped
+      pull: true
+      networks:
+      - name: homelab
+      volumes:
+      - /apps/grafana/grafana.ini:/etc/grafana/grafana.ini
+      - /apps/grafana/data:/var/lib/grafana
+      ports:
+      - 3000:3000
+      detach: true

@@ -17,12 +17,9 @@
       detach: true
       env:
         SERVICE_NAME: "hermes"
-        AKB_RBMQ_HOST: rbmq
-        AKB_RBMQ_USER: "{{ rbmq_user }}"
-        AKB_RBMQ_PASSWORD: "{{ rbmq_pass }}"
-        AKB_RBMQ_PORT: "5672"
-        AKB_RBMQ_VHOST: "/"
         AKB_EMAIL_SERVER_HOST: "{{ email_server_host }}"
         AKB_EMAIL_SERVER_PORT: "{{ email_server_port }}"
         AKB_NOREPLY_EMAIL: "{{ email_no_reply }}"
         AKB_NOREPLY_EMAIL_PASSWORD: "{{ email_no_reply_password }}"
+        AKB_ZEROMQ_HOST: "cerbes"
+        AKB_ZEROMQ_PORT: "5555"

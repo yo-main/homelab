@@ -4,15 +4,23 @@ import os
 import socket
 import sys
 import boto3
+from datetime import datetime
 from pathlib import Path
 
 
 BUCKET = os.environ["AWS_BACKUP_BUCKET"]
 HOSTNAME = socket.gethostname()
+LOG_FILE = os.environ.get("LOG_FILE", "/var/log/cron.log")
+
+def log(msg):
+    now = datetime.now()
+    with open(LOG_FILE, "a") as stream:
+        stream.write(f"{now} - {msg}")
 
 
 def run_backup():
     folders = get_folders_to_sync()
+    log(f"Backup started for folders {','.join(folders)}")
 
     if any(folder[0] != "/" for folder in folders):
         raise Exception("Relative paths are not supported")
@@ -21,6 +29,8 @@ def run_backup():
 
     for folder in folders:
         sync(s3_client, folder)
+
+    log(f"Backup successed for folders {','.join(folders)}")
 
 
 def sync(s3, folder):
@@ -47,4 +57,7 @@ def upload_file(s3, file):
 
 
 if __name__ == "__main__":
-    run_backup()
+    try:
+        run_backup()
+    except Exception as exc:
+        log(f"Error while processing backup: {exc}")
