@@ -26,8 +26,8 @@
       # https://stackoverflow.com/questions/56188573/permission-issue-with-postgresql-in-docker-container
       # only set the user id once the folder will have been created
       user: "1001:1001" # ansible gid
-      published_ports:
-      - 5432:5432
+      exposed_ports:
+      - 5432
       restart_policy: unless-stopped
       networks:
       - name: homelab

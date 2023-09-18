@@ -26,6 +26,6 @@
       - /apps/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml:ro
       - /apps/prometheus/data:/prometheus
       - /var/run/docker.sock:/var/run/docker.sock
-      ports:
-      - 9090:9090
+      exposed_ports:
+      - 80:9090
       detach: true

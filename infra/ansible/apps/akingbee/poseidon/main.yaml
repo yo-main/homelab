@@ -9,8 +9,6 @@
       state: started
       pull: true
       platform: linux/arm/v7
-      published_ports:
-      - 8080
       restart_policy: unless-stopped
       networks:
       - name: homelab
