@@ -35,6 +35,8 @@
       - /etc/letsencrypt/live/{{ base_domain }}-0001/privkey.pem:/apps/haproxy/ssl/homelab.pem.key:ro
       - /etc/letsencrypt/live/akingbee.com/fullchain.pem:/apps/haproxy/ssl/akingbee.pem:ro
       - /etc/letsencrypt/live/akingbee.com/privkey.pem:/apps/haproxy/ssl/akingbee.pem.key:ro
+      - /etc/letsencrypt/live/yomain.dev/fullchain.pem:/apps/haproxy/ssl/yomain.pem:ro
+      - /etc/letsencrypt/live/yomain.dev/privkey.pem:/apps/haproxy/ssl/yomain.pem.key:ro
       ports:
       - 80:80
       - 443:443

@@ -1,0 +1,26 @@
+- name: Run tech blog
+  hosts: entrypoint
+  roles:
+  - docker
+
+  tasks:
+  - name: Create app folder
+    file:
+      path: /apps/tech-blog
+      state: directory
+      mode: '0755'
+  - name: Docker login
+    docker_login:
+      username: "{{ docker_username }}"
+      password: "{{ docker_password }}"
+  - name: Run the blog in docker
+    docker_container:
+      name: tech-blog
+      image: yomain/tech-blog
+      state: started
+      pull: true
+      platform: linux/arm/v7
+      restart_policy: unless-stopped
+      networks:
+      - name: homelab
+      detach: true

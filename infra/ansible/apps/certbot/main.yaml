@@ -82,4 +82,21 @@
       - akingbee.com
       - -d
       - "*.akingbee.com"
+  - name: Get certificates yomain.dev
+    become: true
+    command:
+      argv:
+      - certbot
+      - certonly
+      - --dns-digitalocean
+      - --dns-digitalocean-credentials
+      - /apps/certbot/credentials
+      - -m
+      - "{{ email_address }}"
+      - --expand
+      - -n
+      - -d
+      - yomain.dev
+      - -d
+      - "*.yomain.dev"
  
