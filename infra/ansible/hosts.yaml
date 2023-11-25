@@ -1,7 +1,7 @@
 all:
   hosts:
     home:
-      ansible_host: akingbee.com
+      ansible_host: home
       ansible_connection: ssh
       ansible_user: ansible
     database_droplet:
