@@ -8,7 +8,6 @@
       image: yomain/poseidon
       state: started
       pull: true
-      platform: linux/arm/v7
       restart_policy: unless-stopped
       networks:
       - name: homelab

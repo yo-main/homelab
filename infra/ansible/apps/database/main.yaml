@@ -20,7 +20,7 @@
   - name: Run postgres in docker
     docker_container:
       name: postgres
-      image: postgres
+      image: postgres:15
       state: started
       pull: true
       # https://stackoverflow.com/questions/56188573/permission-issue-with-postgresql-in-docker-container
@@ -31,6 +31,7 @@
       restart_policy: unless-stopped
       networks:
       - name: homelab
+      platform: linux/arm/v7
       detach: true
       volumes:
       - /apps/postgres/data:/var/lib/postgresql/data

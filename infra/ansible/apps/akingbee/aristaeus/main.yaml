@@ -10,7 +10,6 @@
       image: yomain/aristaeus
       state: started
       pull: true
-      platform: linux/arm/v7
       restart_policy: unless-stopped
       capabilities:
       - SYS_PTRACE
@@ -54,7 +53,6 @@
       image: yomain/aristaeus
       state: started
       pull: true
-      platform: linux/arm/v7
       restart_policy: unless-stopped
       networks:
       - name: homelab

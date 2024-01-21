@@ -7,6 +7,11 @@
       path: /apps/prometheus
       state: directory
       mode: '0755'
+  - name: Create data folder
+    file:
+      path: /apps/prometheus/data
+      state: directory
+      mode: '0755'
   - name: Inject Configuration file
     copy:
       src: prometheus.yaml

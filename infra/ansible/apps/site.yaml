@@ -1,4 +1,9 @@
+- import_playbook: certbot/main.yaml
 - import_playbook: entrypoint/main.yaml
-- import_playbook: story/main.yaml
-- import_playbook: akingbee/site.yaml
 - import_playbook: database/main.yaml
+- import_playbook: bitwarden/main.yaml
+- import_playbook: prometheus/main.yaml
+- import_playbook: grafana/main.yaml
+- import_playbook: akingbee/site.yaml
+- import_playbook: story/main.yaml
+- import_playbook: tech-blog/main.yaml
