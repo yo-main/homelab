@@ -142,3 +142,7 @@ Because of that, postgres is still running using a linux/arm/v7 platform (I'm so
 This issue is to fix.
 
 A few other services are still running with linux/arm/v7 because I didn't have time yet to build the for the correct platform.
+
+### Grafana
+
+Do a damn backup of the dashboards..................
