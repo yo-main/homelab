@@ -1,0 +1,26 @@
+- name: Run redis
+  hosts: entrypoint
+
+  tasks:
+  - name: Create app folder
+    file:
+      path: /apps/redis
+      state: directory
+      mode: '0755'
+  - name: Create data folder
+    file:
+      path: /apps/redis/data
+      state: directory
+      mode: '0755'
+  - name: Run redis in docker
+    docker_container:
+      name: redis
+      image: redis:7
+      state: started
+      pull: true
+      restart_policy: unless-stopped
+      volumes:
+      - /apps/redis/data:/data
+      networks:
+      - name: homelab
+      detach: true

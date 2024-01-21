@@ -1,0 +1,64 @@
+- name: Run paperless ngx
+  hosts: entrypoint
+  roles:
+  - paperless
+  - certbot
+
+  tasks:
+  - name: Create app folder
+    file:
+      path: /apps/paperless
+      state: directory
+      mode: '0755'
+  - name: Create data folder
+    file:
+      path: /apps/paperless/data
+      state: directory
+      mode: '0755'
+  - name: Create media folder
+    file:
+      path: /apps/paperless/media
+      state: directory
+      mode: '0755'
+  - name: Create export folder
+    file:
+      path: /apps/paperless/export
+      state: directory
+      mode: '0755'
+  - name: Create consume folder
+    file:
+      path: /apps/paperless/consume
+      state: directory
+      mode: '0755'
+  - name: Run paperless in docker
+    docker_container:
+      name: paperless
+      image: ghcr.io/paperless-ngx/paperless-ngx:latest
+      state: started
+      pull: true
+      restart_policy: unless-stopped
+      volumes:
+      - /apps/paperless/data:/usr/src/paperless/data
+      - /apps/paperless/media:/usr/src/paperless/media
+      - /apps/paperless/export:/usr/src/paperless/export
+      - /apps/paperless/consume:/usr/src/paperless/consume
+      env:
+        PAPERLESS_REDIS: "redis://redis:6379"
+        PAPERLESS_DBHOST: "postgres"
+        PAPERLESS_DBUSER: "{{ db_user }}"
+        PAPERLESS_DBPASS: "{{ db_password }}"
+        PAPERLESS_DBSSLMODE: "disable"
+        PAPERLESS_URL: "http://home"
+        PAPERLESS_FORCE_SCRIPT_NAME: "/paperless"
+        PAPERLESS_TIME_ZONE: "Europe/Paris"
+        PAPERLESS_OCR_LANGUAGE: "fra"
+        PAPERLESS_SECRET_KEY: "{{ paperless_secret_key }}"
+        PAPERLESS_ADMIN_USER: "{{ paperless_admin }}"
+        PAPERLESS_ADMIN_PASSWORD: "{{ paperless_admin_pwd }}"
+        PAPERLESS_ADMIN_EMAIL: "{{ paperless_admin_email }}"
+        USERMAP_UID: "1001"
+        USERMAP_GID: "1001"
+
+      networks:
+      - name: homelab
+      detach: true

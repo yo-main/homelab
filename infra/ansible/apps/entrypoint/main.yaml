@@ -17,6 +17,14 @@
     copy:
       src: allowed_ips
       dest: /apps/haproxy/allowed_ips
+  - name: Inject home.pem
+    copy:
+      src: home.pem
+      dest: /apps/haproxy/home.pem
+  - name: Inject home.key
+    copy:
+      src: home.key
+      dest: /apps/haproxy/home.key
   - name: Run haproxy in docker
     docker_container:
       name: entrypoint
@@ -31,6 +39,8 @@
       volumes:
       - /apps/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
       - /apps/haproxy/allowed_ips:/usr/local/etc/haproxy/allowed_ips:ro
+      - /apps/haproxy/home.pem:/apps/haproxy/ssl/home.pem:ro
+      - /apps/haproxy/home.key:/apps/haproxy/ssl/home.pem.key:ro
       - /etc/letsencrypt/live/{{ base_domain }}/fullchain.pem:/apps/haproxy/ssl/homelab.pem:ro
       - /etc/letsencrypt/live/{{ base_domain }}/privkey.pem:/apps/haproxy/ssl/homelab.pem.key:ro
       - /etc/letsencrypt/live/akingbee.com/fullchain.pem:/apps/haproxy/ssl/akingbee.pem:ro

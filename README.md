@@ -137,6 +137,27 @@ An ansible module is [here](https://prometheus-community.github.io/ansible/branc
 poetry run ansible-galaxy collection install prometheus.prometheus
 ```
 
+
+### Local keys
+
+My local network can be reached on http://home.
+To allow https call on it, I generated some certificates that I can use. That's for local purpose only.
+
+```bash
+# create a private key
+openssl genpkey -algorithm RSA -out home.key
+
+# create a CSR using the key above
+# don't forget to put the DNS when asked to do so
+openssl req -new -key home.key -out home.csr
+
+# sign the CSR for a duration of 10000 days with the same private key
+openssl x509 -req -days 10000 -in home.csr -signkey home.key -out home.crt
+
+# combine the key and certificate into a single file
+cat mydomain.key mydomain.crt >> /etc/ssl/private/mydomain.pem
+```
+
 ## TODO
 
 ### Postgres data volume
