@@ -4,6 +4,8 @@
 */**/secrets
 */**/secrets.tf
 
+backup/
+
 # find a way to backup them...
 .terraform
 *.tfstate

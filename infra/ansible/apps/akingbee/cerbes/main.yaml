@@ -23,8 +23,3 @@
         CERBES__HASH_KEY: "{{ cerbes_hash_key }}"
         CERBES__JWT_KEY: "{{ cerbes_jwt_key }}"
         CERBES__DATABASE__URL : "postgres://{{ cerbes_db_user }}:{{ cerbes_db_password }}@{{ database_host }}/{{ cerbes_db_name }}"
-        CERBES__RABBITMQ__HOST : rbmq
-        CERBES__RABBITMQ__USER: "{{ rbmq_user }}"
-        CERBES__RABBITMQ__PASSWORD: "{{ rbmq_pass }}"
-        CERBES__RABBITMQ__PORT: "5672"
-        CERBES__RABBITMQ__VHOST: "/"
