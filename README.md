@@ -126,6 +126,16 @@ poetry run ansible-playbook infra/ansible/utils/site.yaml
 poetry run ansible-playbook infra/ansible/apps/site.yaml
 ```
 
+### Node export
+
+I'm using prometheus to collect metrics of my service.
+I can also collect metrics from the raspberry itself through the [node exporter](https://github.com/prometheus/node_exporter)
+
+An ansible module is [here](https://prometheus-community.github.io/ansible/branch/main/node_exporter_role.html). It needs to be installed with
+
+```bash
+poetry run ansible-galaxy collection install prometheus.prometheus
+```
 
 ## TODO
 
