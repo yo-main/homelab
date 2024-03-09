@@ -7,8 +7,8 @@
 
   tasks:
   - name: "Install boto3"
-    ansible.builtin.pip:
-      name: boto3
+    become: true
+    command: apt install -y python3-boto3
   - name: "Create script folder"
     become: true
     file:
@@ -34,3 +34,9 @@
         [default]
         aws_access_key_id={{ aws_access_key }}
         aws_secret_access_key={{ aws_secret_key }}
+  - name: "Allow script to write logs"
+    become: true
+    file:
+      path: /var/log
+      state: directory
+      mode: '0777'

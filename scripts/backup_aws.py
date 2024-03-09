@@ -36,7 +36,7 @@ def run_backup():
 def sync(s3, folder):
     local_files = list_local_files(folder)
     for file in local_files:
-        upload_file(s3, file)
+        upload_file(s3, str(file))
 
 
 def get_folders_to_sync():
@@ -61,3 +61,4 @@ if __name__ == "__main__":
         run_backup()
     except Exception as exc:
         log(f"Error while processing backup: {exc}")
+        raise
