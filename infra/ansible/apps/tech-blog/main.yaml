@@ -19,7 +19,7 @@
       image: yomain/tech-blog
       state: started
       pull: true
-      platform: linux/arm/v7
+      platform: linux/arm64
       restart_policy: unless-stopped
       networks:
       - name: homelab
