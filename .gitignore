@@ -1,6 +1,7 @@
 .venv
 .vault_passwd
 .digitalocean_credentials
+infra/ansible/keys
 */**/secrets
 */**/secrets.tf
 
@@ -11,3 +12,4 @@ backup/
 *.tfstate
 *.tfstate.backup
 .terraform.tfstate.lock.info
+.direnv

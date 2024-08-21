@@ -49,6 +49,7 @@
     command:
       argv:
       - certbot
+      - --agree-tos
       - certonly
       - --dns-digitalocean
       - --dns-digitalocean-credentials

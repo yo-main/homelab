@@ -103,10 +103,27 @@ ssh 192.168.1.28 -l ansible -i infra/ansible/secrets/id_rsa
 Maybe that part could be done directly using ansible but I would need to use my own ssh key to do it first.
 Maybe one day I'll try but today's not that day
 
+Do not forget to put the ansible user password you type in the `infra/ansible/keys/passwd` file so that
+ansible is allowed to use `sudo`
+
 
 ### Put back in place local backup
 
 :warning: Don't forget to put back the backup which I probably through `./scripts/local_backup.sh`
+
+#### you messed up and need to rely on s3 backups ?
+
+No worry, I got you covered.
+Get your user AWS credentials and the bucket name. Then 
+
+```bash
+aws s3 sync s3://my-backup/coucou/ici backups
+
+# and put back those backup where needed
+# be careful, first folder must have been created with ansible
+scp -r -i infra/ansible/secrets/id_rsa backups/apps/bitwarden/data ansible@192.168.1.38:/app/bitwarden/data
+scp -r -i infra/ansible/secrets/id_rsa backups/apps/postgres/data ansible@192.168.1.38:/app/postgres/data
+```
 
 ### Certbot configuration
 
