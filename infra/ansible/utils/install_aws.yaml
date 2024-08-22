@@ -1,0 +1,37 @@
+- name: Install aws cli
+  hosts: entrypoint
+  roles:
+  - sudo
+  - aws
+
+  tasks:
+  - name: Install dependencies
+    become: true
+    apt: 
+      update_cache: true
+      pkg:
+      - curl
+      - unzip
+  - name: Create folder
+    file:
+      path: /apps/awscli
+      state: directory
+      mode: '0755'
+  - name: download awscli
+    command: curl "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" -o "/apps/awscli/awscliv2.zip"
+  - name: unzip awscli
+    command: unzip /apps/awscli/awscliv2.zip -d /apps/awscli
+  - name: install awscli
+    become: true
+    command: /apps/awscli/aws/install
+  - name: "Create credentials file"
+    ansible.builtin.file:
+      path: "~/.aws/credentials"
+      state: touch
+  - name: "Add content in aws credentials file"
+    ansible.builtin.copy:
+      dest: "~/.aws/credentials"
+      content: |
+        [default]
+        aws_access_key_id={{ aws_access_key }}
+        aws_secret_access_key={{ aws_secret_key }}

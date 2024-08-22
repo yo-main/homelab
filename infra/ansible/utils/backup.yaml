@@ -6,9 +6,6 @@
   - sudo
 
   tasks:
-  - name: "Install boto3"
-    become: true
-    command: apt install -y python3-boto3
   - name: "Create script folder"
     become: true
     file:
@@ -17,8 +14,9 @@
       mode: '0777'
   - name: "Copy backup script"
     ansible.builtin.copy:
-      src: ../../../scripts/backup_aws.py
-      dest: /scripts/backup_aws.py
+      src: ../../../scripts/backup_aws.sh
+      dest: /scripts/backup_aws.sh
+      mode: '0777'
   - name: "Create aws folder"
     ansible.builtin.file:
       path: "~/.aws"
@@ -34,9 +32,3 @@
         [default]
         aws_access_key_id={{ aws_access_key }}
         aws_secret_access_key={{ aws_secret_key }}
-  - name: "Allow script to write logs"
-    become: true
-    file:
-      path: /var/log
-      state: directory
-      mode: '0777'
