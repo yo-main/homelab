@@ -1,0 +1,36 @@
+- name: Run Akingbee service
+  hosts: home
+  roles:
+  - akingbee
+  - aws
+
+  tasks:
+  - name: Create app folder
+    file:
+      path: /apps/akingbee
+      state: directory
+      mode: '0755'
+  - name: Run Akingbee Api
+    docker_container:
+      name: akingbee
+      image: yomain/akingbee
+      state: started
+      pull: true
+      restart_policy: unless-stopped
+      networks:
+      - name: homelab
+      detach: true
+      volumes:
+      - /apps/akingbee/akingbee.db:/app/akingbee.db
+      env:
+        SERVICE_NAME: "akingbee"
+        APP_PRIVATE_KEY: "{{ akingbee_secret_key }}"
+        TOKEN_TTL: "600" # 10 minutes
+        AKB_MAIN_HOSTED_ZONE: akingbee.com
+  - name: "Add cron for backup"
+    ansible.builtin.cron:
+      name: "Backup akingbee data"
+      minute: "30"
+      hour: "22"
+      job: "/scripts/backup_aws.sh /apps/akingbee/akingbee.db s3://{{ aws_backup_bucket }}/akingbee/akingbee.db"
+

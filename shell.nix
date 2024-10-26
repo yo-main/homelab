@@ -3,6 +3,7 @@ pkgs.mkShellNoCC {
   # ensure aws cli will use the correct urllib3
   shellHook = ''
     export PYTHONPATH=""
+    export EDITOR=hx
   '';
 
   packages = with pkgs; [ 

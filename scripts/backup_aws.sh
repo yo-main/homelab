@@ -3,7 +3,7 @@
 SOURCE="$1"
 TARGET="$2"
 
-aws s3 sync "$SOURCE" "$TARGET" --delete 
+/usr/local/bin/aws s3 sync "$SOURCE" "$TARGET" --delete 
 
 success="$?"
 
