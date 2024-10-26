@@ -1,4 +1,0 @@
-- import_playbook: poseidon/main.yaml
-- import_playbook: aristaeus/main.yaml
-- import_playbook: hermes/main.yaml
-- import_playbook: cerbes/main.yaml
