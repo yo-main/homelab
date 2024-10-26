@@ -1,5 +1,7 @@
 - name: Install grafana
   hosts: entrypoint
+  roles:
+  - aws
 
   tasks:
   - name: Create app folder
@@ -33,3 +35,10 @@
       exposed_ports:
       - 80:3000
       detach: true
+  - name: "Add cron for backup"
+    ansible.builtin.cron:
+      name: "Backup grafana data"
+      minute: "30"
+      hour: "22"
+      job: "/scripts/backup_aws.sh /apps/grafana/data s3://{{ aws_backup_bucket }}/grafana/data"
+
