@@ -32,3 +32,10 @@
         [default]
         aws_access_key_id={{ aws_access_key }}
         aws_secret_access_key={{ aws_secret_key }}
+  - name: "Add ansible user in node-exp group"
+    become: true
+    ansible.builtin.user:
+        append: true
+        name: ansible
+        groups: 
+          - node-exp
