@@ -36,7 +36,7 @@
   - name: "Add cron for backup"
     ansible.builtin.cron:
       name: "Backup grafana data"
-      minute: "30"
+      minute: "00"
       hour: "22"
       job: "/scripts/backup_aws.sh /apps/grafana/data s3://{{ aws_backup_bucket }}/grafana/data"
 

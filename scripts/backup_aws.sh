@@ -21,7 +21,7 @@ metric() {
         tempfile=$(mktemp)
         cat "$METRIC_FILE" | grep -v "$current_metric" > $tempfile
         cat "$METRIC_FILE" | grep "$current_metric" | sed -E 's/.*([0-9]+)$/echo "$((\1 + 1))"/ge' | awk -v prefix="$current_metric" '{print prefix " " $0}' >> $tempfile
-        mv "$tempfile" "$METRIC_FILE"
+        cat "$tempfile" > "$METRIC_FILE"
     fi
 }
 

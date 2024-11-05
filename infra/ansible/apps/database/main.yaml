@@ -43,7 +43,7 @@
   - name: "Add cron for backup"
     ansible.builtin.cron:
       name: "Backup postgres data"
-      minute: "30"
+      minute: "15"
       hour: "22"
       job: "/scripts/backup_aws.sh /apps/postgres/data s3://{{ aws_backup_bucket }}/postgres/data"
 
