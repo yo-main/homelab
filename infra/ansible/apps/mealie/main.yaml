@@ -1,0 +1,44 @@
+- name: Run mealie service
+  hosts: home
+  roles:
+  - certbot
+  - aws
+
+  tasks:
+  - name: Create app folder
+    file:
+      path: /apps/mealie
+      state: directory
+      mode: '0755'
+  - name: Create data folder
+    file:
+      path: /apps/mealie/data
+      state: directory
+      mode: '0755'
+  - name: Run mealie
+    docker_container:
+      name: mealie
+      image: ghcr.io/mealie-recipes/mealie:v2.7.1
+      state: started
+      pull: true
+      restart_policy: unless-stopped
+      networks:
+      - name: homelab
+      detach: true
+      volumes:
+      - /apps/mealie/data:/app/data
+      env:
+        # see https://raw.githubusercontent.com/firefly-iii/firefly-iii/main/.env.example
+        ALLOW_SIGNUP: "false"
+        TZ: "Europe/Paris"
+        PUID: "1000"
+        PGID: "1000"
+        BASE_URL: "https://mealie.{{base_domain}}.com"
+
+  - name: "Add cron for backup"
+    ansible.builtin.cron:
+      name: "Backup mealie data"
+      minute: "40"
+      hour: "22"
+      job: "/scripts/backup_aws.sh /apps/mealie/data s3://{{ aws_backup_bucket }}/mealie/data"
+

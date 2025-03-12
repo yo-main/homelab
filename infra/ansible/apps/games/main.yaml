@@ -1,0 +1,21 @@
+- name: Run games
+  hosts: entrypoint
+
+  tasks:
+  - name: Create app folder
+    file:
+      path: /apps/games
+      state: directory
+      mode: '0755'
+  - name: Run image in docker
+    docker_container:
+      name: games
+      image: nginx
+      state: started
+      pull: true
+      restart_policy: unless-stopped
+      volumes:
+      - /apps/games/build:/usr/share/nginx/html:ro
+      networks:
+      - name: homelab
+      detach: true
