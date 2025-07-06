@@ -3,18 +3,25 @@
   roles:
   - aws
   - firefly
+  - sudo
 
   tasks:
   - name: Create app folder
+    become: true
     file:
-      path: /apps/firefly
+      path: /apps/firefly/storage
       state: directory
-      mode: '0755'
+      mode: '0775'
+      owner: 'ansible'
+      group: 'www-data'
   - name: Create app folder
+    become: true
     file:
-      path: /apps/firefly/database.sqlite
+      path: /apps/firefly/storage/database
       state: directory
-      mode: '0755'
+      mode: '0775'
+      owner: 'ansible'
+      group: 'www-data'
   - name: Run firefly
     docker_container:
       name: firefly
@@ -26,7 +33,7 @@
       - name: homelab
       detach: true
       volumes:
-      - /apps/firefly/database.sqlite:/var/www/html/storage/database/database.sqlite
+      - /apps/firefly/storage:/var/www/html/storage
       env:
         # see https://raw.githubusercontent.com/firefly-iii/firefly-iii/main/.env.example
         APP_ENV: "production"
@@ -36,14 +43,14 @@
         APP_URL: "{{ app_url }}"
         DEFAULT_LANGUAGE: "en_US"
         TZ: "Europe/Paris"
-        TRUSTED_PROXIES: "**"
+        TRUSTED_PROXIES: "*"
         APP_LOG_LEVEL: "notice"
         DB_CONNECTION: "sqlite"
 
-  # - name: "Add cron for backup"
-  #   ansible.builtin.cron:
-  #     name: "Backup akingbee data"
-  #     minute: "30"
-  #     hour: "22"
-  #     job: "/scripts/backup_aws.sh /apps/akingbee/akingbee.db s3://{{ aws_backup_bucket }}/akingbee/akingbee.db"
+  - name: "Add cron for backup"
+    ansible.builtin.cron:
+      name: "Backup firefly data"
+      minute: "30"
+      hour: "22"
+      job: "/scripts/backup_aws.sh /apps/firefly/storage s3://{{ aws_backup_bucket }}/firefly/storage"
 
