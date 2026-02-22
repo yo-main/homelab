@@ -20,10 +20,10 @@
   - name: download awscli
     command: curl "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" -o "/apps/awscli/awscliv2.zip"
   - name: unzip awscli
-    command: unzip /apps/awscli/awscliv2.zip -d /apps/awscli
+    command: unzip -o /apps/awscli/awscliv2.zip -d /apps/awscli
   - name: install awscli
     become: true
-    command: /apps/awscli/aws/install
+    command: /apps/awscli/aws/install --update
   - name: "Create credentials file"
     ansible.builtin.file:
       path: "~/.aws/credentials"

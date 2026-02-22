@@ -32,5 +32,5 @@
       - /apps/prometheus/data:/prometheus
       - /var/run/docker.sock:/var/run/docker.sock
       exposed_ports:
-      - 80:9090
+      - 9090
       detach: true

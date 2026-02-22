@@ -14,10 +14,12 @@
       - curl
       - gnupg
       - lsb-release
-  - name: add docker gpg key
-    apt_key: 
+  - name: Add Docker apt repository key.
+    ansible.builtin.get_url:
       url: https://download.docker.com/linux/debian/gpg
-      state: present
+      dest: /etc/apt/trusted.gpg.d/docker.asc
+      mode: '0644'
+      force: true
   - name: Add docker repository
     apt_repository: 
       repo: deb https://download.docker.com/linux/debian bullseye stable
